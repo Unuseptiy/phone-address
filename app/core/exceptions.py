@@ -1,0 +1,2 @@
+class NoEntityError(Exception):
+    pass
