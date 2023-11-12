@@ -1,0 +1,22 @@
+version: '3'
+services:
+  redis:
+    container_name: phone_address_redis
+    image: redis
+#    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
+  phone_address_api:
+    container_name: phone_address_api
+    build:
+      context: app
+    volumes:
+      - ./app/.env:/app/.env:ro
+      - ./app/logs:/app/logs
+    ports:
+      - 8000:8000
+#    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
