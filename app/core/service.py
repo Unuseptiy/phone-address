@@ -1,5 +1,10 @@
+import logging
+
 from app.core.repositories import PhoneAddressRepository
 from app.core import exceptions as exc
+
+
+logger = logging.getLogger(__name__)
 
 
 async def create_update_data(
@@ -19,6 +24,7 @@ async def create_update_data(
     :return: None
     :rtype: Coroutine[None, None, None]
     """
+    logger.info(f"call params: phone={phone} address={address}")
     await phone_address_repository.add(phone, address)
 
 
@@ -36,7 +42,10 @@ async def get_data(
     :return: corresponding address
     :rtype: Coroutine[None, None, bytes]
     """
+    logger.info(f"call params: phone={phone}")
     address = await phone_address_repository.get(phone)
     if address:
+        logger.info(f"return: address={address}")
         return address
+    logger.info("error: NoEntityError")
     raise exc.NoEntityError(f"There is no entity with phone {phone}")
