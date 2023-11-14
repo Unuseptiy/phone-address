@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, Request
+from fastapi import FastAPI, Request
 import logging
 import random
 import string
@@ -30,24 +30,31 @@ def get_app() -> FastAPI:
 
     async def set_body(request: Request, body: bytes) -> None:
         async def receive():
-            return {'type': 'http.request', 'body': body}
+            return {"type": "http.request", "body": body}
 
         request._receive = receive
 
     @application.middleware("http")
     async def log_requests(request: Request, call_next):
-        idem = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        idem = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
         body = await request.body()
         await set_body(request, body)
-        body_str = body.decode().replace('\n', ' ')
-        logger.info(f"rid={idem} start request path={request.url.path}, path_params={request.path_params}, query_params={request.query_params}, body_params={body_str}")
+        body_str = body.decode().replace("\n", " ")
+        logger.info(
+            f"rid={idem} start request path={request.url.path}, "
+            f"path_params={request.path_params}, "
+            f"query_params={request.query_params}, "
+            f"body_params={body_str}"
+        )
         start_time = time.time()
 
         response = await call_next(request)
 
         process_time = (time.time() - start_time) * 1000
-        formatted_process_time = '{0:.2f}'.format(process_time)
-        logger.info(f"rid={idem} completed_in={formatted_process_time}ms status_code={response.status_code}")
+        formatted_process_time = "{0:.2f}".format(process_time)
+        logger.info(
+            f"rid={idem} completed_in={formatted_process_time}ms status_code={response.status_code}"
+        )
 
         return response
 

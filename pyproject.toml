@@ -14,6 +14,19 @@ pydantic-settings = "^2.0.3"
 uvicorn = "^0.24.0.post1"
 
 
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+black = "^23.11.0"
+isort = "^5.12.0"
+pytest-asyncio = "^0.21.1"
+faker = "^20.0.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest]
+testpaths = "tests/"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

@@ -15,20 +15,23 @@ config = get_config()
 @router.get("", response_model=sch.Address)
 async def check_data(phone: str = Query(..., pattern=r"^\d{11,11}$")):
     """
-        Get data by phone.
+    Get data by phone.
 
-        - params:
-            - phone: phone
+    - params:
+        - phone: phone
 
-        - return:
-            - Address
-        """
-    phone_address_repository = PhoneAddressRepository(config.redis_url, config.phone_address_db)
+    - return:
+        - Address
+    """
+    phone_address_repository = PhoneAddressRepository(
+        config.redis_url, config.phone_address_db
+    )
     try:
         address_b = await service.get_data(phone, phone_address_repository)
     except exc.NoEntityError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"The address by the phone {phone} not found."
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"The address by the phone {phone} not found.",
         )
     return sch.Address(address=address_b)
 
@@ -44,6 +47,8 @@ async def create_update_data(data: sch.Data):
     -return:
         - None
     """
-    phone_address_repository = PhoneAddressRepository(config.redis_url, config.phone_address_db)
+    phone_address_repository = PhoneAddressRepository(
+        config.redis_url, config.phone_address_db
+    )
     await service.create_update_data(data.phone, data.address, phone_address_repository)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

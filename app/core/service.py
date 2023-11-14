@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 async def create_update_data(
-        phone: str,
-        address: str,
-        phone_address_repository: PhoneAddressRepository,
+    phone: str,
+    address: str,
+    phone_address_repository: PhoneAddressRepository,
 ) -> None:
     """
     Create or update data.
@@ -29,8 +29,8 @@ async def create_update_data(
 
 
 async def get_data(
-        phone: str,
-        phone_address_repository: PhoneAddressRepository,
+    phone: str,
+    phone_address_repository: PhoneAddressRepository,
 ) -> bytes:
     """
     Get data by phone.
