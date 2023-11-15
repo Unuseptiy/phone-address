@@ -1,7 +1,10 @@
+import pytest
+
 from .conftest import fake
 from .utils import get_phone_number
 from app.core.repositories import PhoneAddressRepository
 from app.core import service
+from app.core import exceptions as exc
 
 
 async def test_create_data(get_phone_address_db_config):
@@ -55,3 +58,14 @@ async def test_get_data(get_phone_address_db_config):
     assert address_from_redis.decode() == address
 
     await p_a_repo.redis_db.delete(phone)
+
+
+async def test_get_non_existent_data(get_phone_address_db_config):
+    """
+    Test get non existent data from redis.
+    """
+    phone = get_phone_number()
+    p_a_repo = PhoneAddressRepository(*get_phone_address_db_config)
+
+    with pytest.raises(exc.NoEntityError):
+        await service.get_data(phone, p_a_repo)
