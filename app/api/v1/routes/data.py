@@ -24,7 +24,7 @@ async def check_data(phone: str = Query(..., pattern=r"^\d{11,11}$")):
         - Address
     """
     phone_address_repository = PhoneAddressRepository(
-        config.redis_url, config.phone_address_db
+        config.redis_url
     )
     try:
         address_b = await service.get_data(phone, phone_address_repository)
@@ -48,7 +48,7 @@ async def create_update_data(data: sch.Data):
         - None
     """
     phone_address_repository = PhoneAddressRepository(
-        config.redis_url, config.phone_address_db
+        config.redis_url
     )
     await service.create_update_data(data.phone, data.address, phone_address_repository)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

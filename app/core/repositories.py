@@ -5,9 +5,9 @@ logger = logging.getLogger(__name__)
 
 
 class PhoneAddressRepository:
-    def __init__(self, url: str, db: int):
-        logger.info(f"call params: url={url}, db={db}")
-        self.redis_db = aioredis.from_url(url, db=db)
+    def __init__(self, url: str):
+        logger.info(f"call params: url={url}")
+        self.redis_db = aioredis.from_url(url, db=1)
 
     async def get(self, key: str) -> bytes:
         """

@@ -22,4 +22,4 @@ def event_loop():
 @pytest.fixture
 async def get_phone_address_db_config():
     config = get_config()
-    yield config.redis_url, config.phone_address_db
+    yield config.redis_url,

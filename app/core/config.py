@@ -15,7 +15,6 @@ class AppConfig(BaseSettings):
     debug: bool = True
 
     redis_url: str = Field(..., alias="REDIS_URL")
-    phone_address_db: int = Field(..., alias="PHONE_ADDRESS_DB")
 
     class Config:
         env_file = Path(__file__).parent.parent / ".env"
